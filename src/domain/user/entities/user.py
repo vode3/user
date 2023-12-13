@@ -32,3 +32,7 @@ class User(AggregateRoot[UserId]):
     @property
     def is_admin(self) -> bool:
         return self.role.raw_value == RoleEnum.ADMIN.value
+
+    @property
+    def is_deleted(self) -> bool:
+        return self.deleted_at.raw_value is not None
