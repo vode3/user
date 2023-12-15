@@ -29,11 +29,13 @@ class IDType(BaseType[uuid.UUID]):
 
 class FirstNameType(BaseType[str]):
     impl = Text
+    cache_ok = True
     _vo = FirstName
 
 
 class LastNameType(BaseType[str]):
     impl = Text
+    cache_ok = True
     _vo = LastName
 
 
@@ -45,6 +47,7 @@ class UsernameType(BaseType[str]):
 
 class HashedPasswordType(BaseType[str]):
     impl = Text
+    cache_ok = True
     _vo = HashedPassword
 
 
@@ -56,19 +59,23 @@ class EmailType(BaseType[str]):
 
 class RoleType(BaseType[RoleEnum]):
     impl = Enum(RoleEnum, name="role_enum")
+    cache_ok = True
     _vo = Role
 
 
 class CreatedAtType(BaseType[datetime.datetime]):
     impl = DateTime(timezone=True)
+    cache_ok = True
     _vo = CreatedAt
 
 
 class UpdatedAtType(BaseType[datetime.datetime]):
     impl = DateTime(timezone=True)
+    cache_ok = True
     _vo = UpdatedAt
 
 
 class DeletedAtType(BaseType[Optional[datetime.datetime]]):
     impl = DateTime(timezone=True)
+    cache_ok = True
     _vo = DeletedAt

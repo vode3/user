@@ -13,6 +13,8 @@ class BaseType(TypeDecorator[ValueObject[VT]]):
     impl: TypeEngine[Any] | Type[TypeEngine[Any]]
     _vo: Type[ValueObject[VT]]
 
+    cache_ok = True
+
     def process_bind_param(
         self, value: Optional[ValueObject[VT]], dialect: Dialect
     ) -> Optional[VT]:

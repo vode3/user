@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Sequence
 
 from src.domain.user.entities import User
 from src.domain.user.value_objects import Email, UserId, Username
@@ -19,5 +19,5 @@ class UserReader(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_all(self, limit: int, offset: int) -> List[User]:
+    async def get_all(self, limit: int, offset: int) -> Sequence[User]:
         raise NotImplementedError

@@ -11,7 +11,3 @@ class UserWriter(ABC):
     @abstractmethod
     async def update(self, user: User) -> None:
         raise NotImplementedError
-
-    @abstractmethod
-    async def delete(self, user: User) -> None:
-        raise NotImplementedError
