@@ -40,6 +40,12 @@ class TokenService:
     def create_refresh_token(self, user_id: UserId) -> str:
         return self._create_token(user_id, self._refresh_expire_time, self._refresh_secret)
 
+    def validate_access_token(self, token: str) -> Payload:
+        return self._validate_token(token, self._access_secret)
+
+    def validate_refresh_token(self, token: str) -> Payload:
+        return self._validate_token(token, self._refresh_secret)
+
     def _create_token(self, user_id: UserId, expire_time: timedelta, secret_key: str) -> str:
         iat = datetime.utcnow()
         exp = iat + expire_time
@@ -48,12 +54,6 @@ class TokenService:
         payload = {"sub": sub, "iat": iat, "exp": exp}
 
         return self._generator.encode(payload=payload, secret_key=secret_key)
-
-    def validate_access_token(self, token: str) -> Payload:
-        return self._validate_token(token, self._access_secret)
-
-    def validate_refresh_token(self, token: str) -> Payload:
-        return self._validate_token(token, self._refresh_secret)
 
     def _validate_token(self, token: str, secret_key: str) -> Payload:
         payload = self._generator.decode(token, secret_key)

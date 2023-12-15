@@ -2,7 +2,7 @@ import datetime
 from functools import lru_cache
 from os import PathLike
 from pathlib import Path
-from typing import Final, Literal, Optional, TypeAlias, Union
+from typing import Final, Optional, TypeAlias, Union
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -12,20 +12,12 @@ ENV_FILE: Final[str] = "./.env"
 
 
 _StrPath: TypeAlias = Union[PathLike[str], str, Path]
-_Algorithm: TypeAlias = Literal[
-    "HS256",
-    "HS384",
-    "HS512",
-    "RS256",
-    "RS384",
-    "RS512",
-]
 
 
 class JWTSettings(BaseSettings):
     access_secret: str
     refresh_secret: str
-    algorithm: _Algorithm
+    algorithm: str
     access_exp: datetime.timedelta
     refresh_exp: datetime.timedelta
 
@@ -60,6 +52,7 @@ class APISettings(BaseSettings):
 
 
 class DBSettings(BaseSettings):
+    uri: str
     name: str
     host: str
     port: int
@@ -75,7 +68,9 @@ class DBSettings(BaseSettings):
 
     @property
     def url(self) -> str:
-        return "postgresql+asyncpg://{}:{}@{}:{}/{}".format(
+        if "sqlite" in self.uri:
+            return self.uri.format(self.name)
+        return self.uri.format(
             self.user,
             self.password,
             self.host,

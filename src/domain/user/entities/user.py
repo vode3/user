@@ -23,7 +23,7 @@ class User(AggregateRoot[UserId]):
     last_name: LastName
     email: Email
     username: Username
-    hashed_password: HashedPassword
+    password: HashedPassword
     role: Role
     created_at: CreatedAt
     updated_at: UpdatedAt
@@ -31,7 +31,7 @@ class User(AggregateRoot[UserId]):
 
     @property
     def is_admin(self) -> bool:
-        return self.role.raw_value == RoleEnum.ADMIN.value
+        return self.role.raw_value == RoleEnum.ADMIN
 
     @property
     def is_deleted(self) -> bool:
