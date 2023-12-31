@@ -7,22 +7,15 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from src.infrastructure.config import load_settings
-from src.infrastructure.db.models.base import metadata
+from src.infrastructure.db.models import Base
 
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
+target_metadata = Base.metadata
+
 config = context.config
 config.set_main_option("sqlalchemy.url", load_settings().db.url)
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
-
-# add your model's MetaData object here
-# for 'autogenerate' support
-target_metadata = metadata
+fileConfig(config.config_file_name)  # type: ignore[arg-type]
 
 
 def run_migrations_offline() -> None:
@@ -43,7 +36,6 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        user_module_prefix="types.",
     )
 
     with context.begin_transaction():
@@ -51,9 +43,7 @@ def run_migrations_offline() -> None:
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(
-        connection=connection, target_metadata=target_metadata, user_module_prefix="types."
-    )
+    context.configure(connection=connection, target_metadata=target_metadata)
 
     with context.begin_transaction():
         context.run_migrations()

@@ -1,11 +1,8 @@
-from src.domain.user.entities import User
-from src.infrastructure.db.models.base import mapper_registry, metadata
-from src.infrastructure.db.models.user import user_table
+from src.infrastructure.db.models.base import Base
+from src.infrastructure.db.models.user import User
 
 
 __all__ = (
-    "metadata",
-    "user_table",
+    "Base",
+    "User",
 )
-
-mapper_registry.map_imperatively(User, user_table)

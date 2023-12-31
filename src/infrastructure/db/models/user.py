@@ -1,31 +1,15 @@
-from sqlalchemy import Column, Table
+from sqlalchemy import Enum, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from src.infrastructure.db.models.base import metadata
-from src.infrastructure.db.types.user import (
-    CreatedAtType,
-    DeletedAtType,
-    EmailType,
-    FirstNameType,
-    HashedPasswordType,
-    IDType,
-    LastNameType,
-    RoleType,
-    UpdatedAtType,
-    UsernameType,
-)
+from src.domain.user.value_objects.role import RoleEnum
+from src.infrastructure.db.models.base import Base
+from src.infrastructure.db.models.base.mixins import TimeMixin, UUIDMixin
 
 
-user_table = Table(
-    "user",
-    metadata,
-    Column("id", IDType, primary_key=True, index=True),
-    Column("first_name", FirstNameType),
-    Column("last_name", LastNameType),
-    Column("username", UsernameType, unique=True, index=True),
-    Column("email", EmailType, unique=True, index=True),
-    Column("password", HashedPasswordType),
-    Column("role", RoleType, default="user"),
-    Column("created_at", CreatedAtType),
-    Column("updated_at", UpdatedAtType),
-    Column("deleted_at", DeletedAtType, nullable=True),
-)
+class User(Base, UUIDMixin, TimeMixin):
+    first_name: Mapped[str] = mapped_column(String)
+    last_name: Mapped[str] = mapped_column(String)
+    username: Mapped[str] = mapped_column(String, unique=True, index=True)
+    email: Mapped[str] = mapped_column(String, unique=True, index=True)
+    password: Mapped[str] = mapped_column(String)
+    role: Mapped[RoleEnum] = mapped_column(Enum(RoleEnum, name="role_enum"))
