@@ -18,9 +18,13 @@ lint: ## Run pre-commit
 	pre-commit run --all-files
 
 
-.PHONY: run
-run: ## Run app
-	python -m $(package_dir)
+.PHONY: run_app
+run_app: ## Run app
+	python -m $(package_dir).app
+
+.PHONY: run_auth
+run_auth: ## Run app
+	python -m $(package_dir).auth
 
 
 .PHONY: docker_build

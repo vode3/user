@@ -65,6 +65,7 @@ fixable = ["ALL"]
 
 [tool.ruff.isort]
 lines-after-imports = 2
+known-local-folder = ["app", "auth"]
 
 [tool.ruff.pyupgrade]
 keep-runtime-typing = true
